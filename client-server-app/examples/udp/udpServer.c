@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     memset(msg,0x0,MAX_MSG);
     tam_Cli = sizeof(endCli);
     /* recebe a mensagem  */
-    n = recvfrom(sd, msg, MAX_MSG, 0, (struct sockaddr *) &endCli, &tam_Cli);
+    n = recvfrom(sd, msg, MAX_MSG, 0, (struct sockaddr *) &endCli, (socklen_t *) &tam_Cli);
     if(n<0) {
       printf("%s: nao pode receber dados \n",argv[0]);
       continue;} 

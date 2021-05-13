@@ -39,14 +39,14 @@ int main(int argc, char *argv[]) {
 
   sd = socket(AF_INET,SOCK_DGRAM,0);
   if(sd<0) {
-    printf("%s: não pode abrir o socket \n",argv[0]);
+    printf("%s: nao pode abrir o socket \n",argv[0]);
     exit(1); }
 
-/* Relacionando o socket sd com a estrutura ladoCli /*
+/* Relacionando o socket sd com a estrutura ladoCli */
 /* Depois do bind, sd faz referencia a protocolo local, ip local e porta local */
   rc = bind(sd, (struct sockaddr *) &ladoCli, sizeof(ladoCli));
   if(rc<0) {
-    printf("%s: não pode fazer um bind da porta\n", argv[0]);
+    printf("%s: nao pode fazer um bind da porta\n", argv[0]);
     exit(1); }
   printf("{UDP, IP_Cli: %s, Porta_Cli: %u, IP_R: %s, Porta_R: %s}\n", inet_ntoa(ladoCli.sin_addr), ntohs(ladoCli.sin_port), argv[1], argv[2]);
 

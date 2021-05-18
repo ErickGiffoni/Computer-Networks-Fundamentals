@@ -50,18 +50,20 @@ int main (int argc, char * argv[]){
 
    printf("----- listening to %s:%s -----\n\n", argv[1], argv[2]);
 
+   int accept_descriptor;
+
    while(1){
-      if(accept(socket_descriptor, (struct sockaddr *) &client, (socklen_t *) sizeof(client)) < 0){
-         printf("> failed to accept connection\n");
+      if(( accept_descriptor = accept(socket_descriptor, (struct sockaddr *) &client, (socklen_t *) sizeof(client))) < 0){
+         printf("%d > failed to accept connection\n", accept_descriptor);
       }
       else{
          printf("client [%s:%u] connected\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
          char message[BUFFER_SIZE];
-         
+
          while(1){
             memset(message, 0x0, sizeof(message));
 
-            recv(socket_descriptor, message, sizeof(message), 0);
+            recv(accept_descriptor, message, sizeof(message), 0);
 
             if(strncmp(message, "disconnect", 9) == 0){
                printf("----- [%s:%u] disconnecting -----\n\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));

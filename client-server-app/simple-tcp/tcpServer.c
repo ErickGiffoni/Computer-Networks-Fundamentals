@@ -13,7 +13,7 @@
 #include <stdlib.h>     // atoi
 #include <string.h>     // memset
 
-#define NUMBER_OF_CLIENTS  7
+#define NUMBER_OF_CLIENTS  5
 #define BUFFER_SIZE        140
 
 int main (int argc, char * argv[]){
@@ -53,8 +53,9 @@ int main (int argc, char * argv[]){
    int accept_descriptor;
 
    while(1){
-      if(( accept_descriptor = accept(socket_descriptor, (struct sockaddr *) &client, (socklen_t *) sizeof(client))) < 0){
-         printf("%d > failed to accept connection\n", accept_descriptor);
+       int clientsz = sizeof(client);
+      if(( accept_descriptor = accept(socket_descriptor, (struct sockaddr *) &client, &clientsz)) < 0){
+        printf("%d > failed to accept connection\n", accept_descriptor);
       }
       else{
          printf("client [%s:%u] connected\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));

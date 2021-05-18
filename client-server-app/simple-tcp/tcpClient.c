@@ -15,7 +15,7 @@
 #include <netdb.h>
 #include <unistd.h>
 
-#define NUMBER_OF_CLIENTS  7
+#define NUMBER_OF_CLIENTS  5
 #define BUFFER_SIZE        140
 
 int main (int argc, char * argv[]){
@@ -38,7 +38,9 @@ int main (int argc, char * argv[]){
    server.sin_addr.s_addr  = inet_addr(argv[1]);
    server.sin_port         = htons(atoi(argv[2]));
 
-   int value = connect(socket_descriptor, (struct sockaddr *) &server, sizeof(server));
+   int serversz;
+
+   int value = connect(socket_descriptor, (struct sockaddr *) &server, &serversz);
    if(value < 0 ){
       printf("%s: error trying to connect to server\n", argv[0]);
       return 3;

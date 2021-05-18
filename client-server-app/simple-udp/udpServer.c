@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
    struct sockaddr_in server;
 
    sockett = socket(AF_INET, SOCK_DGRAM, 0); // 0 -> internet protocol
-   if(socket < 0){
+   if(sockett < 0){
       printf("%s: error trying to open socket :(\n", argv[0]);
       return 0;
    }

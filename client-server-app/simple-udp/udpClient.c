@@ -20,7 +20,7 @@
 int main(int argc, char *argv[]) {
 
    if(argc < 2){
-      printf("Use: <server-ip> <server-port>\n");
+      printf("Use: <server-ip> <server-port>\n\thint: if your internal ip doesnt work, try loopback: 127.0.0.1\n");
       return 0;
    }
 
@@ -51,11 +51,14 @@ int main(int argc, char *argv[]) {
 
    char message[BUFFER_SIZE];
    memset(message, 0, sizeof(message));
+   // char receivedMessage[BUFFER_SIZE];
+   // memset(receivedMessage, 0x0, sizeof(receivedMessage));
 
    int bytes;
 
    while(1){
       printf("client: ");
+      fflush(stdin);
       fgets(message, BUFFER_SIZE, stdin);
       if(strncmp(message, "disconnect", 9) == 0){
          printf("----- client disconnecting -----\n\n");
@@ -65,8 +68,14 @@ int main(int argc, char *argv[]) {
       if(bytes < 0){
          printf("Cannot send message\n");
       }
+      else {
+         memset(message, 0x0, sizeof(message));
+      }
 
-      memset((char *) &message, 0, sizeof(message));
+      // if(recvfrom(sockett, receivedMessage, BUFFER_SIZE, 0, (struct sockaddr *) &server, (socklen_t *) sizeof(server)) >= 0){
+      //    printf("server [%s:%u] --> %s\n", inet_ntoa(server.sin_addr), ntohs(server.sin_port), receivedMessage);
+      //    memset(receivedMessage, 0x0, sizeof(receivedMessage));
+      // }
    }
 
    close(sockett);

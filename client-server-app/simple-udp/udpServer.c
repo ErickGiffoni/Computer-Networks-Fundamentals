@@ -45,28 +45,44 @@ int main(int argc, char *argv[]) {
 
    bindd = bind(sockett, (struct sockaddr *) &server, sizeof(server));
    if(bindd < 0){
-      printf("%s: error trying to bind", argv[0]);
+      printf("%s: error trying to bind\n", argv[0]);
       return 0;
    }
 
    printf("----- listening to %s:%s -----\n\n", argv[1], argv[2]);
 
    char receivedMessage[BUFFER_SIZE];
+   memset(receivedMessage, 0x0, BUFFER_SIZE);
+   // char sendMessage[BUFFER_SIZE];
+   // memset(sendMessage, 0x0, BUFFER_SIZE);
 
    int clientSize;
    int bytes;
+   // char back;
 
    while(1){
       
-      memset(receivedMessage, 0x0, BUFFER_SIZE);
       clientSize = sizeof(client);
       bytes = recvfrom(sockett, receivedMessage, BUFFER_SIZE, 0, (struct sockaddr *) &client, (socklen_t *) &clientSize);
-
+      
       if(bytes < 0){
          printf("Cannot receive message\n");
       }
+      else {
+         printf("client [%s:%u] --> %s\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port), receivedMessage);
+         memset(receivedMessage, 0x0, BUFFER_SIZE);
+         // printf("Do you want to send a message to this client ? (y/n) ");
+         // scanf(" %c", &back);
 
-      printf("client [%s:%u] --> %s\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port), receivedMessage);
+         // if(strncmp(&back, "y", 1) == 0 ){
+         //    // send a message
+         //    fgets(sendMessage, BUFFER_SIZE, stdin);
+         //    sendto(sockett, sendMessage, strlen(sendMessage), 0, (struct sockaddr *) &client, sizeof(client));
+         // }
+      }
+
+      // memset(sendMessage, 0x0, BUFFER_SIZE);      
+
    }
 
    return 0;

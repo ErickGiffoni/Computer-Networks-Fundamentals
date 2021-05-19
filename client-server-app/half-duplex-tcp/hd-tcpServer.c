@@ -71,16 +71,33 @@ int main (int argc, char * argv[]){
 
                recv(accept_descriptor, message, sizeof(message), 0);
 
+               printf("\n[%s:%u] > %s", inet_ntoa(client.sin_addr), ntohs(client.sin_port), message);
+
                if(strncmp(message, "disconnect", 9) == 0){
                   printf("----- [%s:%u] disconnecting -----\n\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
                   break;
                }
+               else if(strncmp(message, "over", 4) == 0){
+                  /* wait for client's response */
+                  printf("...client said over, your turn...\n");
 
-               printf("[%s:%u] > %s", inet_ntoa(client.sin_addr), ntohs(client.sin_port), message);
+                  while(1){
+                     memset(message, 0x0, sizeof(message));
 
+                     printf("\nyou > ");
+                     fgets(message, BUFFER_SIZE, stdin);
+
+                     send(accept_descriptor, message, sizeof(message), 0);
+
+                     if(strncmp(message, "over", 4) == 0){
+                        printf("waiting for client [%s:%u] to respond\n\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
+                        break;
+                     }
+                  }
+               } // end else if server speaking
             }
             close(accept_descriptor);
-         }
+         } // end if child
          else if(child < 0){
             /* error */
             printf("%s: tried to create a child to accept client but failed\n", argv[0]);

@@ -38,9 +38,9 @@ int main (int argc, char * argv[]){
    server.sin_addr.s_addr  = inet_addr(argv[1]);
    server.sin_port         = htons(atoi(argv[2]));
 
-   int serversz;
+   socklen_t serversz = sizeof(server);
 
-   int value = connect(socket_descriptor, (struct sockaddr *) &server, &serversz);
+   int value = connect(socket_descriptor, (struct sockaddr *) &server, serversz);
    if(value < 0 ){
       printf("%s: error trying to connect to server\n", argv[0]);
       return 3;

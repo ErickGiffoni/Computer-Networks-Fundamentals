@@ -53,7 +53,7 @@ int main (int argc, char * argv[]){
    int accept_descriptor;
 
    while(1){
-       int clientsz = sizeof(client);
+      socklen_t clientsz = sizeof(client);
       if(( accept_descriptor = accept(socket_descriptor, (struct sockaddr *) &client, &clientsz)) < 0){
         printf("%d > failed to accept connection\n", accept_descriptor);
       }

@@ -6,14 +6,13 @@
 */
 
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
+#include <sys/types.h>  // connect
+#include <sys/socket.h> // connect, getsockname
 #include <netinet/in.h> // sockaddr_in
 #include <arpa/inet.h>  // inet_addr
 #include <stdlib.h>     // atoi
 #include <string.h>     // memset
-#include <netdb.h>
-#include <unistd.h>
+#include <unistd.h>     // close
 
 #define NUMBER_OF_CLIENTS  5
 #define BUFFER_SIZE        140
@@ -33,43 +32,31 @@ int main (int argc, char * argv[]){
    }
 
    struct sockaddr_in server;
+   struct sockaddr_in client;
 
    server.sin_family       = AF_INET;
    server.sin_addr.s_addr  = inet_addr(argv[1]);
    server.sin_port         = htons(atoi(argv[2]));
 
    socklen_t serversz = sizeof(server);
+   socklen_t clientsz = sizeof(client);
 
    int value = connect(socket_descriptor, (struct sockaddr *) &server, serversz);
    if(value < 0 ){
-      printf("%s: error trying to connect to server\n", argv[0]);
+      printf("%s: error trying to connect to server\n\tmake sure server is up and running\n", argv[0]);
       return 3;
    }
 
    printf("----- connected to %s:%s -----\n\n", argv[1], argv[2]);
+
+   getsockname(socket_descriptor, (struct sockaddr *) &client, &clientsz);
    
    char message[BUFFER_SIZE];
-
-   /* Getting client's hostname and IP address 
-    * source: https://www.geeksforgeeks.org/c-program-display-hostname-ip-address/
-    */
-   char hostbuffer[256];
-   char *IPbuffer;
-   struct hostent *host_entry;
-   int hostname;
-
-   hostname = gethostname(hostbuffer, sizeof(hostbuffer));
-
-   host_entry = gethostbyname(hostbuffer);
-
-   IPbuffer = inet_ntoa(*((struct in_addr*)
-                           host_entry->h_addr_list[0]));
-   /* end of Getting client's hostname and IP address */
 
    while(1){
 
       memset(message, 0x0, sizeof(message));
-      printf("[%s:%d] > ", IPbuffer, (int) getpid());
+      printf("[%s:%u] > ", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
 
       fgets(message, BUFFER_SIZE, stdin);
 

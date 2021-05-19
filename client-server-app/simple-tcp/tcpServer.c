@@ -71,7 +71,7 @@ int main (int argc, char * argv[]){
                break;
             }
 
-            printf("[%s:%u] > %s\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port), message);
+            printf("[%s:%u] > %s", inet_ntoa(client.sin_addr), ntohs(client.sin_port), message);
 
          }
       }

@@ -44,7 +44,9 @@ para o cliente, basta enviar ```over```, e assim sucessivamente;<br>
 - O servidor consegue atender mais de um cliente por vez. Entretanto, se um deles<br>
 disser ```over```, o servidor para de mostrar as mensagens que podem estar <br>
 chegando até que ele mande suas mensagens para o respectivo cliente e depois<br>
-```over```.
+```over```.<br>
+
+- Para encerrar a execução do servidor, tecle CTRL + C.<br>
 
 **Limitações**
 

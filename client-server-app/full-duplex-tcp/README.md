@@ -52,6 +52,8 @@ para o cliente, basta enviar ```over```, e assim sucessivamente.
 
 - TODO
 
+- Para encerrar a execução do servidor, tecle CTRL + C.<br>
+
 **Limitações**
 
 

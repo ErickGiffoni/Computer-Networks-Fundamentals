@@ -49,7 +49,9 @@ o cliente seja atendido;
 o padrão é: o cliente é o detentor da vez de enviar mensagens; para que o servidor<br>
 possa enviar a mensagem, o cliente precisa mandar a frase ```over```, então o<br>
 servidor entende que está na vez dele. Quando o servidor quer dar a vez de volta<br>
-para o cliente, basta enviar ```over```, e assim sucessivamente.
+para o cliente, basta enviar ```over```, e assim sucessivamente.<br>
+
+- Para encerrar a execução do servidor, tecle CTRL + C.<br>
 
 **Limitações**
 

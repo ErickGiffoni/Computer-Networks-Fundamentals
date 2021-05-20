@@ -35,7 +35,16 @@ do servidor que está em execução !
 - Para encerrar a conexão com o servidor, o cliente precisa enviar a mensagem<br>
 ```disconnect```;
 
-- TODO
+- É possível que tanto cliente quanto servidor enviem mensagens. Por decisão arbitrária,<br>
+o padrão é: o cliente é o detentor da vez de enviar mensagens; para que o servidor<br>
+possa enviar a mensagem, o cliente precisa mandar a frase ```over```, então o<br>
+servidor entende que está na vez dele. Quando o servidor quer dar a vez de volta<br>
+para o cliente, basta enviar ```over```, e assim sucessivamente;<br>
+
+- O servidor consegue atender mais de um cliente por vez. Entretanto, se um deles<br>
+disser ```over```, o servidor para de mostrar as mensagens que podem estar <br>
+chegando até que ele mande suas mensagens para o respectivo cliente e depois<br>
+```over```.
 
 **Limitações**
 

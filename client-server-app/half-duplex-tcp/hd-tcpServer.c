@@ -78,7 +78,7 @@ int main (int argc, char * argv[]){
                   break;
                }
                else if(strncmp(message, "over", 4) == 0){
-                  /* wait for client's response */
+                  /* server will speak now */
                   printf("...client said over, your turn...\n");
 
                   while(1){

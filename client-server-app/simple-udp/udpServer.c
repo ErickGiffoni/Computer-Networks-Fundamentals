@@ -52,7 +52,6 @@ int main(int argc, char *argv[]) {
 
    int clientSize;
    int bytes;
-   // char back;
 
    while(1){
       
@@ -88,9 +87,7 @@ int main(int argc, char *argv[]) {
          } // end else if server speaking
 
          memset(receivedMessage, 0x0, BUFFER_SIZE);
-      }
-
-      // memset(sendMessage, 0x0, BUFFER_SIZE);      
+      }   
 
    }
 

@@ -39,10 +39,6 @@ int main(int argc, char *argv[]) {
    server.sin_addr.s_addr = inet_addr(argv[1]);
    server.sin_port = htons(atoi(argv[2]));
 
-   // client.sin_family = AF_INET;
-   // client.sin_addr.s_addr = htonl(INADDR_ANY);
-   // client.sin_port = htons(0);
-
    bindd = bind(sockett, (struct sockaddr *) &server, sizeof(server));
    if(bindd < 0){
       printf("%s: error trying to bind\n", argv[0]);
@@ -53,8 +49,6 @@ int main(int argc, char *argv[]) {
 
    char receivedMessage[BUFFER_SIZE];
    memset(receivedMessage, 0x0, BUFFER_SIZE);
-   // char sendMessage[BUFFER_SIZE];
-   // memset(sendMessage, 0x0, BUFFER_SIZE);
 
    int clientSize;
    int bytes;
@@ -70,15 +64,30 @@ int main(int argc, char *argv[]) {
       }
       else {
          printf("client [%s:%u] --> %s\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port), receivedMessage);
-         memset(receivedMessage, 0x0, BUFFER_SIZE);
-         // printf("Do you want to send a message to this client ? (y/n) ");
-         // scanf(" %c", &back);
 
-         // if(strncmp(&back, "y", 1) == 0 ){
-         //    // send a message
-         //    fgets(sendMessage, BUFFER_SIZE, stdin);
-         //    sendto(sockett, sendMessage, strlen(sendMessage), 0, (struct sockaddr *) &client, sizeof(client));
-         // }
+         if(strncmp(receivedMessage, "disconnect", 9) == 0){
+            printf("----- client disconnecting -----\n\n");
+         }
+         else if(strncmp(receivedMessage, "over", 4) == 0){
+            /* server will speak now */
+            printf("...client said over, your turn...\n");
+
+            while(1){
+               memset(receivedMessage, 0x0, sizeof(receivedMessage));
+
+               printf("\nyou > ");
+               fgets(receivedMessage, BUFFER_SIZE, stdin);
+
+               sendto(sockett, receivedMessage, strlen(receivedMessage), 0, (struct sockaddr *) &client, sizeof(client));
+
+               if(strncmp(receivedMessage, "over", 4) == 0){
+                  printf("waiting for client [%s:%u] to respond\n\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
+                  break;
+               }
+            }
+         } // end else if server speaking
+
+         memset(receivedMessage, 0x0, BUFFER_SIZE);
       }
 
       // memset(sendMessage, 0x0, BUFFER_SIZE);      

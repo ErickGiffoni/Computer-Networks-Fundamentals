@@ -58,24 +58,37 @@ int main(int argc, char *argv[]) {
 
    while(1){
       printf("client: ");
-      fflush(stdin);
+      // fflush(stdin);
+
       fgets(message, BUFFER_SIZE, stdin);
-      if(strncmp(message, "disconnect", 9) == 0){
-         printf("----- client disconnecting -----\n\n");
-         break;
-      }
       bytes = sendto(sockett, message, strlen(message), 0, (struct sockaddr *) &server, sizeof(server));
+
       if(bytes < 0){
          printf("Cannot send message\n");
       }
       else {
+         if(strncmp(message, "disconnect", 9) == 0){
+            printf("----- client disconnecting -----\n\n");
+            break;
+         }
+         else if(strncmp(message, "over", 4) == 0){
+            /* wait for server's response */
+            printf("...waiting server to respond...\n");
+            while(1){
+               memset(message, 0x0, sizeof(message));
+
+               recvfrom(sockett, message, BUFFER_SIZE, 0, (struct sockaddr *) &server, (socklen_t *) &server);
+
+               if(strncmp(message, "over", 4) == 0){
+                  printf("server [%s:%s] said over, your turn\n\n", argv[1], argv[2]);
+                  break;
+               }
+
+               printf("server [%s:%s] > %s", argv[1], argv[2], message);
+            }
+         }
          memset(message, 0x0, sizeof(message));
       }
-
-      // if(recvfrom(sockett, receivedMessage, BUFFER_SIZE, 0, (struct sockaddr *) &server, (socklen_t *) sizeof(server)) >= 0){
-      //    printf("server [%s:%u] --> %s\n", inet_ntoa(server.sin_addr), ntohs(server.sin_port), receivedMessage);
-      //    memset(receivedMessage, 0x0, sizeof(receivedMessage));
-      // }
    }
 
    close(sockett);

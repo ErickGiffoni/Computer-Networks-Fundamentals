@@ -14,7 +14,6 @@
 #include <string.h>     // memset
 #include <unistd.h>     // close
 
-#define NUMBER_OF_CLIENTS  5
 #define BUFFER_SIZE        140
 
 int main (int argc, char * argv[]){

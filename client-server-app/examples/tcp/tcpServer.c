@@ -44,18 +44,20 @@ int main(int argc, char *argv[]) {
    /* Ouve porta */
    if (listen(sd, QLEN) < 0) {
      fprintf(stderr,"Falhou ouvindo porta!\n");
-     exit(1); }
+     exit(1); 
+  }
 
    printf("Servidor ouvindo no IP %s, na porta %s ...\n\n", argv[1], argv[2]);
    /* Aceita conexoes */
    alen = sizeof(endCli);
    for ( ; ; ) {
-	 /* espera nova conexao de um processo cliente ... */	
-	if ( (novo_sd=accept(sd, (struct sockaddr *)&endCli, &alen)) < 0) {
-		fprintf(stdout, "Falha na conexao\n");
-		exit(1); }
-	fprintf(stdout, "Cliente %s: %u conectado.\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port)); 
-	atende_cliente(novo_sd, endCli);
+	     /* espera nova conexao de um processo cliente ... */	
+	    if ( (novo_sd=accept(sd, (struct sockaddr *)&endCli, &alen)) < 0) {
+	    	fprintf(stdout, "Falha na conexao\n");
+	    	exit(1); 
+      }
+	    fprintf(stdout, "Cliente %s: %u conectado.\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port)); 
+	    atende_cliente(novo_sd, endCli);
    } /* fim for */
 } /* fim do programa */
 
@@ -63,11 +65,11 @@ int atende_cliente(int descritor, struct sockaddr_in endCli)  {
    char bufin[MAX_SIZE];
    int  n;
    while (1) {
- 	memset(&bufin, 0x0, sizeof(bufin));
-	n = recv(descritor, &bufin, sizeof(bufin),0);
-	if (strncmp(bufin, "FIM", 3) == 0)
-            break;
-	fprintf(stdout, "[%s:%u] => %s\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port), bufin);
+ 	  memset(&bufin, 0x0, sizeof(bufin));
+	  n = recv(descritor, &bufin, sizeof(bufin),0);
+	  if (strncmp(bufin, "FIM", 3) == 0)
+      break;
+	  fprintf(stdout, "[%s:%u] => %s\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port), bufin);
    } /* fim while */
    fprintf(stdout, "Encerrando conexao com %s:%u ...\n\n", inet_ntoa(endCli.sin_addr), ntohs(endCli.sin_port));
    close (descritor);

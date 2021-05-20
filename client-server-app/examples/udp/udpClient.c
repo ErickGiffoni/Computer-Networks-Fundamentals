@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 
 /* Preenchendo as informacoes de identificacao do cliente */
   ladoCli.sin_family 	 = AF_INET;
-  ladoCli.sin_addr.s_addr= htonl(INADDR_ANY);  
+  ladoCli.sin_addr.s_addr= htonl(INADDR_ANY);
   ladoCli.sin_port 	     = htons(0); /* usa porta livre entre (1024-5000)*/
 
 /* Criando um socket. Nesse momento a variavel       */

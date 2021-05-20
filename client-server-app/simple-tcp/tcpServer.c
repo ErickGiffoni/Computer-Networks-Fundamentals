@@ -66,13 +66,30 @@ int main (int argc, char * argv[]){
 
             recv(accept_descriptor, message, sizeof(message), 0);
 
+            printf("[%s:%u] > %s", inet_ntoa(client.sin_addr), ntohs(client.sin_port), message);
+
             if(strncmp(message, "disconnect", 9) == 0){
                printf("----- [%s:%u] disconnecting -----\n\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
                break;
             }
+            else if(strncmp(message, "over", 4) == 0){
+               /* server talks now */
+               printf("\n... client said over, your turn...\n\n");
 
-            printf("[%s:%u] > %s", inet_ntoa(client.sin_addr), ntohs(client.sin_port), message);
+               while(1){
+                  printf("you > ");
+                  memset(message, 0x0, sizeof(message));
+                  fgets(message, BUFFER_SIZE, stdin);
 
+                  send(accept_descriptor, message, sizeof(message), 0);
+
+                  if(strncmp(message, "over", 4) == 0){
+                     /* back to client */
+                     printf("\n\n...waiting client [%s:%u] to respond...\n\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
+                     break;
+                  }
+               }
+            }
          }
       }
    }

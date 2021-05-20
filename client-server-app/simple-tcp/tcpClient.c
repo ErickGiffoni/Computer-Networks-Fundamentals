@@ -63,11 +63,26 @@ int main (int argc, char * argv[]){
       send(socket_descriptor, message, sizeof(message), 0);
 
       if(strncmp(message, "disconnect", 9) == 0){
-         printf("----- [%s:%s] disconnecting -----\n\n", argv[1], argv[2]);
+         printf("----- disconnecting from [%s:%s] -----\n\n", argv[1], argv[2]);
          break;
       }
+      else if(strncmp(message, "over", 4) == 0){
+         /* server will talk now */
+         printf("\n...waiting server [%s:%s] to respond...\n\n", argv[1], argv[2]);
 
+         while(1){
+            memset(message, 0x0, sizeof(message));
 
+            recv(socket_descriptor, message, sizeof(message), 0);
+
+            printf("server [%s:%s]: %s", argv[1], argv[2], message);
+
+            if(strncmp(message, "over", 4) == 0){
+               printf("\n\nserver said over, your turn\n\n");
+               break;
+            }
+         }
+      }
    }
 
    close(socket_descriptor);

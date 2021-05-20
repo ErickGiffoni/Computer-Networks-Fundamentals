@@ -38,7 +38,18 @@ do servidor que está em execução !
 ```disconnect```;
 
 - Por meio da função ```listen()```, o servidor é capaz de montar uma fila<br>
-para atender os clientes;
+para atender os clientes. Dessa forma ele atende um por vez, então os que estão<br>
+na fila podem até enviar mensagens, mas elas só serão exibidas pelo servidor<br>
+quando o cliente da vez se desconctar. Então automaticamente o servidor mostra<br>
+as mensagens enviadas do próximo cliente na fila e passa a o atender;<br>
+
+- É possível que tanto cliente quanto servidor enviem mensagens. Por decisão arbitrária,<br>
+o padrão é: o cliente é o detentor da vez de enviar mensagens; para que o servidor<br>
+possa enviar a mensagem, o cliente precisa mandar a frase ```over```, então o<br>
+servidor entende que está na vez dele. Quando o servidor quer dar a vez de volta<br>
+para o cliente, basta enviar ```over```, e assim sucessivamente;<br>
+
+- Para encerrar a execução do servidor, tecle CTRL + C.<br>
 
 **Limitações**
 

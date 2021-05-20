@@ -51,17 +51,17 @@ int main(int argc, char *argv[]) {
 
    char message[BUFFER_SIZE];
    memset(message, 0, sizeof(message));
-   // char receivedMessage[BUFFER_SIZE];
-   // memset(receivedMessage, 0x0, sizeof(receivedMessage));
 
    int bytes;
+   int serversz;
 
    while(1){
       printf("client: ");
       // fflush(stdin);
+      serversz = sizeof(server);
 
       fgets(message, BUFFER_SIZE, stdin);
-      bytes = sendto(sockett, message, strlen(message), 0, (struct sockaddr *) &server, sizeof(server));
+      bytes = sendto(sockett, message, strlen(message), 0, (struct sockaddr *) &server, serversz);
 
       if(bytes < 0){
          printf("Cannot send message\n");
@@ -75,9 +75,10 @@ int main(int argc, char *argv[]) {
             /* wait for server's response */
             printf("...waiting server to respond...\n");
             while(1){
+               serversz = sizeof(server);
                memset(message, 0x0, sizeof(message));
 
-               recvfrom(sockett, message, BUFFER_SIZE, 0, (struct sockaddr *) &server, (socklen_t *) &server);
+               recvfrom(sockett, message, BUFFER_SIZE, 0, (struct sockaddr *) &server, (socklen_t *) &serversz);
 
                if(strncmp(message, "over", 4) == 0){
                   printf("server [%s:%s] said over, your turn\n\n", argv[1], argv[2]);
